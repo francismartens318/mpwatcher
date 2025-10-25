@@ -19,13 +19,14 @@ export default async function handler(
 
   try {
     // Get configuration from environment
+    const email = process.env.ATLASSIAN_EMAIL;
     const apiToken = process.env.ATLASSIAN_API_TOKEN;
     const developerId = process.env.ATLASSIAN_DEVELOPER_ID;
     const partnerCutPercentage = parseFloat(process.env.PARTNER_CUT_PERCENTAGE || '20');
 
-    if (!apiToken || !developerId) {
+    if (!email || !apiToken || !developerId) {
       return res.status(500).json({
-        error: 'Missing required environment variables: ATLASSIAN_API_TOKEN and ATLASSIAN_DEVELOPER_ID',
+        error: 'Missing required environment variables: ATLASSIAN_EMAIL, ATLASSIAN_API_TOKEN, and ATLASSIAN_DEVELOPER_ID',
       });
     }
 
@@ -38,7 +39,7 @@ export default async function handler(
     } = req.query;
 
     // Initialize services
-    const atlassianAPI = new AtlassianMarketplaceAPI(apiToken, developerId);
+    const atlassianAPI = new AtlassianMarketplaceAPI(email, apiToken, developerId);
     const validator = new TransactionValidator(partnerCutPercentage);
     const reportGenerator = new ReportGenerator();
 

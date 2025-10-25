@@ -20,19 +20,24 @@ Your code is already pushed to the repository.
    - **Output Directory**: `.next` (should auto-fill)
 
 6. **Add Environment Variables** (IMPORTANT):
-   Click "Environment Variables" and add these three variables:
+   Click "Environment Variables" and add these four variables:
 
    **Variable 1:**
-   - Name: `ATLASSIAN_API_TOKEN`
-   - Value: `your_actual_api_token_here`
+   - Name: `ATLASSIAN_EMAIL`
+   - Value: `your_atlassian_account_email@example.com`
    - Environment: Production, Preview, Development (check all)
 
    **Variable 2:**
+   - Name: `ATLASSIAN_API_TOKEN`
+   - Value: `your_actual_api_token_here` (get from https://id.atlassian.com/manage-profile/security/api-tokens)
+   - Environment: Production, Preview, Development (check all)
+
+   **Variable 3:**
    - Name: `ATLASSIAN_DEVELOPER_ID`
    - Value: `39811bd6-659c-4089-a14f-a016fbfec7d9`
    - Environment: Production, Preview, Development (check all)
 
-   **Variable 3:**
+   **Variable 4:**
    - Name: `PARTNER_CUT_PERCENTAGE`
    - Value: `20`
    - Environment: Production, Preview, Development (check all)
@@ -60,6 +65,9 @@ vercel
 # - Override settings? No
 
 # After first deployment, add environment variables:
+vercel env add ATLASSIAN_EMAIL production
+# Paste your Atlassian account email when prompted
+
 vercel env add ATLASSIAN_API_TOKEN production
 # Paste your API token when prompted
 
@@ -106,6 +114,7 @@ vercel --prod
      "status": "ok",
      "timestamp": "...",
      "config": {
+       "hasEmail": true,
        "hasApiToken": true,
        "hasDeveloperId": true,
        "partnerCutPercentage": 20

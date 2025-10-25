@@ -5,12 +5,15 @@ export class AtlassianMarketplaceAPI {
   private client: AxiosInstance;
   private developerId: string;
 
-  constructor(apiToken: string, developerId: string) {
+  constructor(email: string, apiToken: string, developerId: string) {
     this.developerId = developerId;
     this.client = axios.create({
       baseURL: 'https://marketplace.atlassian.com/rest',
+      auth: {
+        username: email,
+        password: apiToken,
+      },
       headers: {
-        'Authorization': `Bearer ${apiToken}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },

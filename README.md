@@ -23,10 +23,22 @@ A Next.js application that validates Atlassian Marketplace transactions to ensur
 
 ## Getting Your Atlassian API Credentials
 
-1. Go to [Atlassian Developer Console](https://developer.atlassian.com/)
-2. Navigate to your account settings
-3. Generate an API token
-4. Note your Developer ID (found in your developer profile)
+The Marketplace API uses **Basic Authentication** with your email and API token.
+
+1. **Get your API Token**:
+   - Go to https://id.atlassian.com/manage-profile/security/api-tokens
+   - Click "Create API token"
+   - Give it a name (e.g., "Marketplace Validator")
+   - Copy and save the token (you won't see it again!)
+
+2. **Get your Developer ID**:
+   - Go to https://developer.atlassian.com/
+   - Navigate to your developer profile or app listings
+   - Your Developer/Space ID is in the URL or profile settings
+   - It looks like: `39811bd6-659c-4089-a14f-a016fbfec7d9`
+
+3. **Use your Atlassian account email**:
+   - This is the email you use to log in to Atlassian
 
 ## Installation
 
@@ -48,6 +60,7 @@ cp .env.example .env
 
 4. Configure environment variables in `.env`:
 ```bash
+ATLASSIAN_EMAIL=your_email@example.com
 ATLASSIAN_API_TOKEN=your_api_token_here
 ATLASSIAN_DEVELOPER_ID=39811bd6-659c-4089-a14f-a016fbfec7d9
 PARTNER_CUT_PERCENTAGE=20
@@ -79,6 +92,7 @@ vercel
 
 3. Set environment variables:
 ```bash
+vercel env add ATLASSIAN_EMAIL
 vercel env add ATLASSIAN_API_TOKEN
 vercel env add ATLASSIAN_DEVELOPER_ID
 vercel env add PARTNER_CUT_PERCENTAGE
@@ -209,6 +223,7 @@ mpwatcher/
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
+| `ATLASSIAN_EMAIL` | Your Atlassian account email | Yes | - |
 | `ATLASSIAN_API_TOKEN` | Your Atlassian API token | Yes | - |
 | `ATLASSIAN_DEVELOPER_ID` | Your developer/space ID | Yes | - |
 | `PARTNER_CUT_PERCENTAGE` | Partner commission % | No | 20 |
@@ -217,7 +232,15 @@ mpwatcher/
 ## Troubleshooting
 
 ### "Missing required environment variables"
-- Ensure `ATLASSIAN_API_TOKEN` and `ATLASSIAN_DEVELOPER_ID` are set in your `.env` file or Vercel environment variables
+- Ensure `ATLASSIAN_EMAIL`, `ATLASSIAN_API_TOKEN`, and `ATLASSIAN_DEVELOPER_ID` are set in your `.env` file or Vercel environment variables
+- The email should be your Atlassian account email (used for Basic Auth)
+- Get your API token from: https://id.atlassian.com/manage-profile/security/api-tokens
+
+### "401 Unauthorized" or "credentials not valid"
+- Double-check your email and API token are correct
+- Make sure the API token hasn't expired
+- Verify the email matches your Atlassian account
+- The API uses Basic Authentication (email + token), not OAuth
 
 ### "Could not fetch pricing information"
 - The marketplace listing page structure may have changed
