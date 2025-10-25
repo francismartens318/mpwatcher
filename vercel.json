@@ -1,0 +1,12 @@
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "ATLASSIAN_API_TOKEN": "@atlassian_api_token",
+    "ATLASSIAN_DEVELOPER_ID": "@atlassian_developer_id",
+    "PARTNER_CUT_PERCENTAGE": "20"
+  }
+}
