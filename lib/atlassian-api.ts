@@ -39,10 +39,26 @@ export class AtlassianMarketplaceAPI {
       if (endDate) params.endDate = endDate;
       if (appKey) params.addonKey = appKey;
 
-      const response = await this.client.get(
-        `/3/reporting/developer-space/${this.developerId}/sales/transactions`,
-        { params }
-      );
+      // Try v2 API first (uses vendor ID)
+      let response;
+      try {
+        console.log('Trying v2 API endpoint...');
+        response = await this.client.get(
+          `/2/vendors/${this.developerId}/reporting/sales/transactions`,
+          { params }
+        );
+      } catch (error: any) {
+        // If v2 fails with 404, try v3 endpoint (from v4 documentation)
+        if (error.response?.status === 404) {
+          console.log('V2 endpoint returned 404, trying V3 endpoint...');
+          response = await this.client.get(
+            `/3/reporting/developer-space/${this.developerId}/sales/transactions`,
+            { params }
+          );
+        } else {
+          throw error;
+        }
+      }
 
       // Map the API response to our internal structure
       const transactions = response.data._embedded?.transactions || response.data.transactions || [];
