@@ -86,8 +86,14 @@ export class PricingFetcher {
       });
 
       return pricingTiers;
-    } catch (error) {
-      console.error(`Error fetching ${platform} pricing for ${appKey}:`, error);
+    } catch (error: any) {
+      // Handle 404 errors separately (app doesn't exist or not available for this platform)
+      if (error.response?.status === 404) {
+        console.warn(`App not found for ${platform}: ${appKey} (this is expected if the app is not available on ${platform})`);
+      } else {
+        // Log other errors with more detail
+        console.error(`Error fetching ${platform} pricing for ${appKey}:`, error.message || error);
+      }
       return [];
     }
   }
